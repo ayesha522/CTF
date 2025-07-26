@@ -1,7 +1,22 @@
 <!DOCTYPE html>
 <html>
   <body>
-    <img src="https://tc9z9khwuwgpklyl1t4pnqvxdojf76vv.oastify.com/admin-visited" />
-    <button id="installbutton">Click</button>
+    <h2>Admin test stage 2</h2>
+
+    <!-- Confirm admin visit -->
+    <img src="https://tc9z9khwuwgpklyl1t4pnqvxdojf76vv.oastify.com/admin-stage2" />
+
+    <!-- Dummy form -->
+    <form id="csrfForm" action="http://localhost:3000/fake" method="POST">
+      <input type="hidden" name="csrfToken" value="faketoken" />
+    </form>
+
+    <!-- Harmless script that just calls your Collaborator -->
+    <script>
+      fetch("https://tc9z9khwuwgpklyl1t4pnqvxdojf76vv.oastify.com/js-ran?step=2");
+    </script>
+
+    <!-- Required for bot click -->
+    <button id="installbutton" onclick="console.log('clicked')">Install</button>
   </body>
 </html>
